@@ -59,18 +59,24 @@ function checkLogin(userSe) {
     }
 }
 
-function actionLogin() {
-	if (document.loginForm.id.value =="") {
-        alert("<spring:message code="comUatUia.validate.idCheck" />"); <%-- 아이디를 입력하세요 --%>
-    } else if (document.loginForm.password.value =="") {
-        alert("<spring:message code="comUatUia.validate.passCheck" />"); <%-- 비밀번호를 입력하세요 --%>
-    } else {
-        document.loginForm.action="<c:url value='/uat/uia/actionLogin.do'/>";
-        //document.loginForm.j_username.value = document.loginForm.userSe.value + document.loginForm.username.value;
-        //document.loginForm.action="<c:url value='/j_spring_security_check'/>";
-        document.loginForm.submit();
-    }
-}
+//로그인 버튼 누르거나 로그인 입력 창에서 엔터를 누를때 처리하는 로직
+document.addEventListener('DOMContentLoaded', function domContentLoaded() {
+	document.loginForm.addEventListener('submit', function actionLogin(e) {
+		e.preventDefault();
+		if (document.loginForm.id.value === "") {
+			alert("<spring:message code="comUatUia.validate.idCheck" />");
+			<%-- 아이디를 입력하세요 --%>
+		} else if (document.loginForm.password.value === "") {
+			alert("<spring:message code="comUatUia.validate.passCheck" />");
+			<%-- 비밀번호를 입력하세요 --%>
+		} else {
+			//e.currentTarget.action="<c:url value='/uat/uia/actionLogin.do'/>"; //이미 form 액션에 정의되어 있으니 주석처리
+			//e.currentTarget.j_username.value = document.loginForm.userSe.value + document.loginForm.username.value;
+			//e.currentTarget.action="<c:url value='/j_spring_security_check'/>";
+			e.currentTarget.submit();
+		}
+	});
+});
 
 function actionCrtfctLogin() {
     document.defaultForm.action="<c:url value='/uat/uia/actionCrtfctLogin.do'/>";
@@ -256,7 +262,7 @@ function fnShowLogin(stat) {
 					<input type="checkbox" name="checkId" class="check2" onclick="javascript:saveid(document.loginForm);" id="checkId">${title}
 				</li>
 				<li>
-					<input type="button" class="btn_login" value="<spring:message code="comUatUia.loginForm.login"/>" onclick="actionLogin()"> <!-- 로그인  -->
+					<input type="submit" class="btn_login" value="<spring:message code="comUatUia.loginForm.login"/>"> <!-- 로그인  -->
 				</li>
 				<li>
 					<ul class="btn_idpw" >
